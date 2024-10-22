@@ -28,10 +28,10 @@ jobs:
         run: |
           pyinstaller --onefile --console AIconsoleClient.py
 
-      - name: List dist files
+      - name: List dist files  
         run: ls dist/
 
-
+      
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -44,7 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Upload the built file as a release asset
+      
       - name: Upload executable to release
         uses: actions/upload-release-asset@v1
         with:
