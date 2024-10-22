@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11.2'
 
@@ -29,7 +29,7 @@ jobs:
           pyinstaller --onefile --console AlconsoleClient.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3  # Updated to the latest version
+        uses: actions/upload-artifact@v4  # Updated to v4
         with:
           name: AlconsoleClient-executable
           path: dist/
