@@ -1,4 +1,4 @@
-name: Build Python Executable
+name: Build and Release Python Executable
 
 on:
   push:
@@ -31,8 +31,26 @@ jobs:
       - name: List dist files
         run: ls dist/
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-          name: AIconsoleClient-executable
-          path: dist/
+          tag_name: ${{ github.sha }}
+          release_name: "Build for commit ${{ github.sha }}"
+          body: "Automatic build for commit ${{ github.sha }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Upload the built file as a release asset
+      - name: Upload executable to release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/AIconsoleClient
+          asset_name: AIconsoleClient
+          asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
