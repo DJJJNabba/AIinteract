@@ -15,8 +15,10 @@ available_models = []
 
 # Model Name Mapping
 model_name_mapping = {
-    'llama-3.2-1b-instruct': 'Llama 3.2',
-    'l3-evil-stheno-v3.2-8b': 'Evil Stheno',
+    'llama-3.2-1b-instruct': 'Llama 1b',
+    'llama-3.2-3b-instruct': 'Llama 3b',
+    'l3-evil-stheno-v3.2-8b': 'Evil',
+    'qwen2.5-14b-uncencored-instruct': 'Uncencored'
 }
 
 # Utility Functions
