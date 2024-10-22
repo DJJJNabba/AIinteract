@@ -1,6 +1,10 @@
 import requests
 import json
 import os
+import urllib3
+import keyboard
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 # Configuration Constants
 API_URL = 'https://88aa-120-151-185-163.ngrok-free.app/v1/chat/completions'
@@ -8,7 +12,7 @@ MODELS_URL = 'https://88aa-120-151-185-163.ngrok-free.app/v1/models/'
 DEFAULT_SYSTEM_PROMPT = 'You are a helpful assistant.'
 
 # Global State
-streaming = False
+streaming = True
 system_prompt = DEFAULT_SYSTEM_PROMPT
 current_model = None
 available_models = []
@@ -58,7 +62,7 @@ def fetch_available_models():
     """Fetch the list of available models from the server."""
     global available_models
     try:
-        response = requests.get(MODELS_URL)
+        response = requests.get(MODELS_URL, verify=False)  # Bypass SSL verification
         response.raise_for_status()
         available_models = response.json().get('data', [])
     except requests.RequestException as e:
@@ -91,11 +95,14 @@ def set_default_model():
         change_model_by_number(1)
 
 def handle_streaming_response(response):
-    """Handle the streaming response from the model."""
+    """Handle the streaming response from the model and allow stopping by pressing backspace."""
     print(f"{get_model_display_name(current_model)}: ", end='', flush=True)
     try:
         for line in response.iter_lines():
             if line:
+                if keyboard.is_pressed('backspace'):
+                    print("\n[Response stopped by user]")
+                    break
                 decoded_line = line.decode('utf-8').strip()
                 if decoded_line.startswith('data: '):
                     chunk = decoded_line[6:].strip()
@@ -126,7 +133,7 @@ def send_message_to_model(messages):
     }
 
     try:
-        response = requests.post(API_URL, headers=headers, json=data, stream=streaming)
+        response = requests.post(API_URL, headers=headers, json=data, stream=streaming, verify=False)  # Bypass SSL verification
         response.raise_for_status()
         if streaming:
             handle_streaming_response(response)
@@ -193,6 +200,7 @@ def reset_conversation(conversation):
 def main():
     """Main program loop for the chat interface."""
     print("Interact with the model. Use '/help' for commands and 'exit' to stop.")
+    print("Press 'backspace' to stop AI response while streaming.")
 
     conversation = [{'role': 'system', 'content': system_prompt}]
     
