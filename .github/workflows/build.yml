@@ -36,9 +36,9 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.sha }}
-          release_name: "Build for commit ${{ github.sha }}"
-          body: "Automatic build for commit ${{ github.sha }}"
+          tag_name: v1.0.${{ github.run_number }}  
+          release_name: "Build v1.0.${{ github.run_number }}"  
+          body: "Automatic build for version v1.0.${{ github.run_number }}"
           draft: false
           prerelease: false
         env:
