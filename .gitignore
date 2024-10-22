@@ -1,0 +1,15 @@
+# Ignore virtual environment
+AIenv/
+
+# Ignore build and dist folders (since we'll add them separately later)
+build/
+dist/
+
+# Ignore PyInstaller .spec file
+*.spec
+
+# Ignore __pycache__
+__pycache__/
+
+# Ignore any compiled bytecode
+*.py[cod]
