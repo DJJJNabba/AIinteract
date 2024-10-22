@@ -28,8 +28,11 @@ jobs:
         run: |
           pyinstaller --onefile --console AIconsoleClient.py
 
+      - name: List dist files
+        run: ls dist/
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AlconsoleClient-executable
+          name: AIconsoleClient-executable
           path: dist/
